@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>GAETO PERSIANAS - Control de Producción y Rentabilidad</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f4f7f9; 
+            margin: 20px; 
+            color: #2c3e50;
+        }
+
+        .document-canvas { 
+            width: 1250px; 
+            margin: auto; 
+            background: white; 
+            box-shadow: 0 0 40px rgba(0,0,0,0.15); 
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        header { 
+            background: #d35400; 
+            color: white; 
+            padding: 20px 40px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 8px solid #0070c0;
+        }
+
+        header h1 { margin: 0; font-size: 28px; letter-spacing: 1px; }
+
+        .admin-bar { 
+            background: #2c3e50; 
+            color: #ecf0f1; 
+            padding: 8px 25px; 
+            font-size: 11px; 
+            font-weight: bold; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* SECCIÓN DATOS DEL CLIENTE */
+        .client-section {
+            display: grid;
+            grid-template-columns: 1.5fr 1.5fr 1fr;
+            gap: 15px;
+            padding: 20px 40px;
+            background: #fdfdfd;
+            border-bottom: 1px solid #eee;
+        }
+
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-size: 10px; font-weight: bold; color: #7f8c8d; text-transform: uppercase; margin-bottom: 5px; }
+        .input-group input, .input-group select { 
+            padding: 8px; border: 1px solid #dcdde1; border-radius: 4px; font-size: 14px; color: #2f3640; font-family: inherit;
+        }
+        
+        .status-select { 
+            background-color: #ebf5fb; 
+            font-weight: bold; 
+            color: #2980b9 !important; 
+            border: 1px solid #2980b9 !important;
+            cursor: pointer;
+        }
+
+        /* PANEL DE INSUMOS (OCULTO EN IMPRESIÓN) */
+        .config-inputs { 
+            display: grid; 
+            grid-template-columns: repeat(6, 1fr); 
+            gap: 10px; 
+            padding: 15px 40px; 
+            background: #fffdf2; 
+            border-bottom: 1px solid #ddd;
+        }
+        .config-group label { font-size: 9px; color: #7f8c8d; display: block; margin-bottom: 4px; font-weight: bold; }
+        .config-group input { width: 85%; padding: 5px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 12px; }
+
+        /* MEDIDAS Y VENTA */
+        .production-grid { 
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.2fr 1.2fr 1.5fr; 
+            gap: 20px; 
+            padding: 25px 40px; 
+            background: #fff;
+        }
+        .prod-field { background: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #eee; }
+        .prod-field label { font-size: 11px; font-weight: bold; color: #0070c0; display: block; margin-bottom: 8px; text-transform: uppercase;}
+        .prod-field input { 
+            width: 90%; padding: 8px; border: 2px solid #3498db; border-radius: 6px; 
+            font-size: 20px; font-weight: bold; text-align: center; color: #d35400;
+        }
+        
+        .m2-result-box { background: #f4f9ff; border: 2px solid #0070c0; text-align: center; }
+        .m2-val { font-size: 26px; font-weight: 900; color: #0070c0; margin-top: 5px; display: block; }
+        .sale-field { background: #fdf2e9; border: 2px solid #e67e22; }
+
+        /* TABLA DE DESGLOSE */
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        th { background: #f8f9fa; padding: 12px 20px; font-size: 11px; color: #34495e; border-bottom: 3px solid #0070c0; text-transform: uppercase; }
+        td { padding: 10px 20px; border-bottom: 1px solid #ecf0f1; font-size: 13px; }
+
+        .col-desc { width: 40%; text-align: left; font-weight: 600; }
+        .col-qty  { width: 15%; text-align: center; color: #d35400; font-weight: bold; }
+        .col-desp { width: 10%; text-align: center; color: #e67e22; font-weight: bold; }
+        .col-unit { width: 15%; text-align: center; color: #7f8c8d; }
+        .col-tot  { width: 20%; text-align: right; font-weight: bold; background: #fcfcfc; }
+
+        /* RESULTADOS FINALES */
+        .results-area {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 30px;
+            padding: 30px 40px;
+            background: #f8f9fa;
+        }
+        .card { padding: 20px; border-radius: 10px; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .card h3 { margin-top: 0; font-size: 14px; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px; text-transform: uppercase;}
+        .row-val { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 18px; }
+        .big-val { font-size: 32px; font-weight: 900; text-align: right; margin-top: 8px; display: block; }
+        .color-prod { color: #d35400; }
+        .color-sale { color: #2980b9; }
+        .color-util { color: #27ae60; }
+        .util-pct-badge { background: #27ae60; color: white; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+
+        .btn-print { 
+            width: 100%; padding: 25px; background: #2c3e50; color: white; border: none; 
+            font-size: 18px; font-weight: bold; cursor: pointer; text-transform: uppercase;
+        }
+
+        @media print {
+            .config-inputs, .btn-print, .admin-bar:nth-of-type(2) { display: none; }
+            .document-canvas { width: 100%; box-shadow: none; border: none; }
+            body { margin: 0; padding: 0; background: white; }
+            input, select { border: 1px solid transparent !important; appearance: none; -webkit-appearance: none; }
+            .status-select { border: 1px solid #eee !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="document-canvas">
+    <header>
+        <div><h1>GAETO PERSIANAS</h1><span>Orden de Producción e Inteligencia de Negocios</span></div>
+        <div style="text-align: right;">
+            <div style="font-size: 18px; font-weight: bold;" id="current-date">--/--/----</div>
+        </div>
+    </header>
+
+    <div class="admin-bar">Información del Cliente y Servicio</div>
+    <div class="client-section">
+        <div class="input-group">
+            <label>Nombre del Cliente</label>
+            <input type="text" placeholder="Nombre completo">
+        </div>
+        <div class="input-group">
+            <label>Dirección de Entrega / Instalación</label>
+            <input type="text" placeholder="Calle, Número, Colonia">
+        </div>
+        <div class="input-group">
+            <label>Fecha de Instalación</label>
+            <input type="date">
+        </div>
+        <div class="input-group">
+            <label>Tipo de Persiana</label>
+            <input type="text" placeholder="Ej. Roller Blackout">
+        </div>
+        <div class="input-group">
+            <label>Lado del Control (Mando)</label>
+            <select id="lado_control">
+                <option value="Derecho">DERECHO</option>
+                <option value="Izquierdo">IZQUIERDO</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Estatus de la Orden</label>
+            <select class="status-select">
+                <option value="Pendiente">PENDIENTE</option>
+                <option value="En proceso de fabricación">EN PROCESO DE FABRICACIÓN</option>
+                <option value="Fabricado">FABRICADO</option>
+                <option value="Listo para instalación">LISTO PARA INSTALACIÓN</option>
+                <option value="En camino">EN CAMINO</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="admin-bar">Configuración de Costos de Insumos (Base)</div>
+    <div class="config-inputs">
+        <div class="config-group"><label>Mecanismo</label><input type="number" id="p_mecanismo" value="45.94" oninput="calcular()"></div>
+        <div class="config-group"><label>Soporte Central</label><input type="number" id="p_soporte" value="12.74" oninput="calcular()"></div>
+        <div class="config-group"><label>Tubo ($/m)</label><input type="number" id="p_tubo" value="47.18" oninput="calcular()"></div>
+        <div class="config-group"><label>Perfil ($/m)</label><input type="number" id="p_perfil" value="44.37" oninput="calcular()"></div>
+        <div class="config-group"><label>Cadena ($/m)</label><input type="number" id="p_cadena" value="2.34" oninput="calcular()"></div>
+        <div class="config-group"><label>Varilla ($/m)</label><input type="number" id="p_varilla" value="4.91" oninput="calcular()"></div>
+        <div class="config-group"><label>Jgo Tapas</label><input type="number" id="p_tapas" value="7.24" oninput="calcular()"></div>
+        <div class="config-group"><label>Contrapeso</label><input type="number" id="p_contrapeso" value="7.60" oninput="calcular()"></div>
+        <div class="config-group"><label>Accesorios</label><input type="number" id="p_acc" value="1.92" oninput="calcular()"></div>
+        <div class="config-group"><label>Mano de Obra</label><input type="number" id="p_mo" value="100.00" oninput="calcular()"></div>
+        <div class="config-group"><label>Instalación</label><input type="number" id="p_ins" value="150.00" oninput="calcular()"></div>
+        <div class="config-group"><label>Merma %</label><input type="number" id="factor_desp" value="5" oninput="calcular()"></div>
+    </div>
+
+    <div class="admin-bar">Especificaciones Técnicas y Venta</div>
+    <div class="production-grid">
+        <div class="prod-field"><label>Ancho (m)</label><input type="number" id="ancho" value="2.18" step="0.01" oninput="calcular()"></div>
+        <div class="prod-field"><label>Alto (m)</label><input type="number" id="alto" value="2.80" step="0.01" oninput="calcular()"></div>
+        <div class="prod-field m2-result-box"><label>Total m²</label><span class="m2-val" id="m2-display">0.00 m²</span></div>
+        <div class="prod-field sale-field"><label>Venta ($/m²)</label><input type="number" id="precio_m2_venta" value="600" oninput="calcular()"></div>
+        <div class="prod-field"><label>Costo Tela ($ Compra)</label><input type="number" id="costoTela" value="935.50" oninput="calcular()"></div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="col-desc">Componente</th>
+                <th class="col-qty">Cantidad</th>
+                <th class="col-desp">% Merma</th>
+                <th class="col-unit">Costo Unit.</th>
+                <th class="col-tot">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-cuerpo"></tbody>
+    </table>
+
+    <div class="results-area">
+        <div class="card">
+            <h3>COSTOS DE PRODUCCIÓN</h3>
+            <div class="row-val"><span>Suma Insumos:</span> <span id="res-materiales">$0.00</span></div>
+            <div class="row-val"><span>I.V.A. (16%):</span> <span id="res-iva">$0.00</span></div>
+            <div class="row-val" style="border-top: 2px solid #eee; padding-top: 15px; font-weight: bold;">
+                <span>COSTO TOTAL:</span> <span class="big-val color-prod" id="res-costo-total">$0.00</span>
+            </div>
+        </div>
+
+        <div class="card" style="background: #2c3e50; color: white; border-left: 10px solid #27ae60;">
+            <h3 style="color: #3498db; border-color: #555; display: flex; justify-content: space-between;">
+                RENTABILIDAD <span class="util-pct-badge" id="res-util-pct">0%</span>
+            </h3>
+            <div class="row-val"><span>Venta Final:</span> <span class="big-val color-sale" id="res-precio-venta">$0.00</span></div>
+            <div class="row-val" style="margin-top: 20px; border-top: 1px solid #555; padding-top: 15px;">
+                <span>GANANCIA NETA:</span> <span class="big-val color-util" id="res-utilidad">$0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-print" onclick="window.print()">Imprimir Cédula de Trabajo</button>
+</div>
+
+<script>
+    function calcular() {
+        const getV = (id) => parseFloat(document.getElementById(id).value) || 0;
+        
+        const fM = 1 + (getV('factor_desp') / 100);
+        const ancho = getV('ancho');
+        const alto = getV('alto');
+        const m2 = ancho * alto;
+        const mtsCadena = alto * 2;
+        
+        document.getElementById('m2-display').innerText = m2.toFixed(2) + " m²";
+
+        const items = [
+            { n: "Tela de Persiana (Corte)", c: "1.00 Pza", d: getV('factor_desp')+"%", p: getV('costoTela'), t: getV('costoTela') * fM },
+            { n: "Juego Mecanismo Bell R16", c: "1.00 Jgo", d: "0%", p: getV('p_mecanismo'), t: getV('p_mecanismo') },
+            { n: "Soporte Central 38mm", c: "1.00 Pza", d: "0%", p: getV('p_soporte'), t: getV('p_soporte') },
+            { n: "Tubo Aluminio 38mm", c: ancho.toFixed(2) + " m", d: getV('factor_desp')+"%", p: getV('p_tubo'), t: ancho * getV('p_tubo') * fM },
+            { n: "Perfil Tirador Tino", c: ancho.toFixed(2) + " m", d: getV('factor_desp')+"%", p: getV('p_perfil'), t: ancho * getV('p_perfil') * fM },
+            { n: "Cadena de Mando Plástica", c: mtsCadena.toFixed(2) + " m", d: "2%", p: getV('p_cadena'), t: mtsCadena * getV('p_cadena') * 1.02 },
+            { n: "Varilla Fibra Vidrio", c: ancho.toFixed(2) + " m", d: "3%", p: getV('p_varilla'), t: ancho * getV('p_varilla') * 1.03 },
+            { n: "Jgo Tapas Perfil Ovalado", c: "1.00 Jgo", d: "0%", p: getV('p_tapas'), t: getV('p_tapas') },
+            { n: "Contrapeso de Mando", c: "1.00 Pza", d: "0%", p: getV('p_contrapeso'), t: getV('p_contrapeso') },
+            { n: "Accesorios (Topes/Conector)", c: "3.00 Pza", d: "0%", p: getV('p_acc'), t: getV('p_acc') * 3 },
+            { n: "Mano de Obra Armado", c: "1.00 Serv", d: "0%", p: getV('p_mo'), t: getV('p_mo') },
+            { n: "Servicio de Instalación", c: "1.00 Serv", d: "0%", p: getV('p_ins'), t: getV('p_ins') }
+        ];
+
+        let subtotalCosto = 0;
+        const tbody = document.getElementById('tabla-cuerpo');
+        tbody.innerHTML = "";
+
+        items.forEach(m => {
+            subtotalCosto += m.t;
+            tbody.innerHTML += `
+                <tr>
+                    <td class="col-desc">${m.n}</td>
+                    <td class="col-qty">${m.c}</td>
+                    <td class="col-desp">${m.d}</td>
+                    <td class="col-unit">$${m.p.toLocaleString('en-US',{minimumFractionDigits:2})}</td>
+                    <td class="col-tot">$${m.t.toLocaleString('en-US',{minimumFractionDigits:2})}</td>
+                </tr>`;
+        });
+
+        const iva = subtotalCosto * 0.16;
+        const costoTotal = subtotalCosto + iva;
+        const precioM2Venta = getV('precio_m2_venta');
+        const ventaTotal = m2 * precioM2Venta;
+        const utilidadDinero = ventaTotal - costoTotal;
+        const utilidadPorcentaje = costoTotal > 0 ? (utilidadDinero / costoTotal) * 100 : 0;
+
+        document.getElementById('res-materiales').innerText = `$${subtotalCosto.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        document.getElementById('res-iva').innerText = `$${iva.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        document.getElementById('res-costo-total').innerText = `$${costoTotal.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        document.getElementById('res-precio-venta').innerText = `$${ventaTotal.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        document.getElementById('res-utilidad').innerText = `$${utilidadDinero.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        document.getElementById('res-util-pct').innerText = `${utilidadPorcentaje.toFixed(1)}%`;
+    }
+
+    document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-MX');
+    window.onload = calcular;
+</script>
+
+</body>
+</html>
