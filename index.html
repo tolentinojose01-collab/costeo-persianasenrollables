@@ -40,16 +40,19 @@
             font-weight: bold; 
             text-transform: uppercase;
             letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* SECCIÓN DATOS DEL CLIENTE */
         .client-section {
             display: grid;
-            grid-template-columns: 1.5fr 1.5fr 1fr;
+            grid-template-columns: 1.5fr 1.5fr 1fr 1fr auto;
             gap: 15px;
             padding: 20px 40px;
             background: #fdfdfd;
             border-bottom: 1px solid #eee;
+            align-items: end;
         }
 
         .input-group { display: flex; flex-direction: column; }
@@ -66,7 +69,6 @@
             cursor: pointer;
         }
 
-        /* PANEL DE INSUMOS (OCULTO EN IMPRESIÓN) */
         .config-inputs { 
             display: grid; 
             grid-template-columns: repeat(6, 1fr); 
@@ -78,7 +80,20 @@
         .config-group label { font-size: 9px; color: #7f8c8d; display: block; margin-bottom: 4px; font-weight: bold; }
         .config-group input { width: 85%; padding: 5px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 12px; }
 
-        /* MEDIDAS Y VENTA */
+        .medidas-section {
+            padding: 15px 40px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+        .medidas-table { width: 100%; border-collapse: collapse; }
+        .medidas-table th { background: #eaf2f8; padding: 8px 4px; font-size: 9.5px; color: #34495e; border-bottom: 2px solid #0070c0; text-transform: uppercase; text-align: center; }
+        .medidas-table td { padding: 5px 3px; border-bottom: 1px solid #ecf0f1; font-size: 11px; text-align: center; }
+        .medidas-table input, .medidas-table select { width: 96%; padding: 5px 3px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 11px; text-align: center; box-sizing: border-box; }
+        .medidas-table .m2-cell { font-weight: bold; color: #0070c0; font-size: 13px; }
+        .medidas-table .costo-cell { font-weight: bold; color: #d35400; font-size: 12px; }
+        .btn-add-medida { background: #27ae60; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; }
+        .btn-del-medida { background: #e74c3c; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 11px; }
+
         .production-grid { 
             display: grid;
             grid-template-columns: 1fr 1fr 1.2fr 1.2fr 1.5fr; 
@@ -97,10 +112,9 @@
         .m2-val { font-size: 26px; font-weight: 900; color: #0070c0; margin-top: 5px; display: block; }
         .sale-field { background: #fdf2e9; border: 2px solid #e67e22; }
 
-        /* TABLA DE DESGLOSE */
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { background: #f8f9fa; padding: 12px 20px; font-size: 11px; color: #34495e; border-bottom: 3px solid #0070c0; text-transform: uppercase; }
-        td { padding: 10px 20px; border-bottom: 1px solid #ecf0f1; font-size: 13px; }
+        table.desglose { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        table.desglose th { background: #f8f9fa; padding: 12px 20px; font-size: 11px; color: #34495e; border-bottom: 3px solid #0070c0; text-transform: uppercase; }
+        table.desglose td { padding: 10px 20px; border-bottom: 1px solid #ecf0f1; font-size: 13px; }
 
         .col-desc { width: 40%; text-align: left; font-weight: 600; }
         .col-qty  { width: 15%; text-align: center; color: #d35400; font-weight: bold; }
@@ -108,7 +122,12 @@
         .col-unit { width: 15%; text-align: center; color: #7f8c8d; }
         .col-tot  { width: 20%; text-align: right; font-weight: bold; background: #fcfcfc; }
 
-        /* RESULTADOS FINALES */
+        .input-cantidad {
+            width: 80px; padding: 4px; border: 1px solid #3498db; border-radius: 4px;
+            text-align: center; font-weight: bold; color: #d35400; font-size: 13px;
+            background: #fff;
+        }
+
         .results-area {
             display: grid;
             grid-template-columns: 1fr 1.3fr;
@@ -118,24 +137,43 @@
         }
         .card { padding: 20px; border-radius: 10px; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .card h3 { margin-top: 0; font-size: 14px; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px; text-transform: uppercase;}
-        .row-val { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 18px; }
+        .row-val { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 16px; }
         .big-val { font-size: 32px; font-weight: 900; text-align: right; margin-top: 8px; display: block; }
         .color-prod { color: #d35400; }
         .color-sale { color: #2980b9; }
         .color-util { color: #27ae60; }
+        .color-inst { color: #8e44ad; }
+        .color-total { color: #16a085; }
         .util-pct-badge { background: #27ae60; color: white; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; }
 
-        .btn-print { 
-            width: 100%; padding: 25px; background: #2c3e50; color: white; border: none; 
-            font-size: 18px; font-weight: bold; cursor: pointer; text-transform: uppercase;
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            padding: 15px 40px;
+            background: #f8f9fa;
+            border-top: 1px solid #ddd;
+            flex-wrap: wrap;
         }
+        .btn { 
+            padding: 12px 24px; border: none; border-radius: 6px; font-size: 14px; font-weight: bold; 
+            cursor: pointer; text-transform: uppercase; transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn-primary { background: #2c3e50; color: white; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-save-config { background: #f39c12; color: white; }
+        .btn-sm { padding: 6px 12px; font-size: 11px; }
 
         @media print {
-            .config-inputs, .btn-print, .admin-bar:nth-of-type(2) { display: none; }
+            .config-inputs, .btn-print, .action-buttons, .no-print { display: none !important; }
             .document-canvas { width: 100%; box-shadow: none; border: none; }
             body { margin: 0; padding: 0; background: white; }
             input, select { border: 1px solid transparent !important; appearance: none; -webkit-appearance: none; }
             .status-select { border: 1px solid #eee !important; }
+            .medidas-table input, .medidas-table select { border: none !important; background: transparent; }
+            .input-cantidad { border: none !important; background: transparent; }
         }
     </style>
 </head>
@@ -153,30 +191,19 @@
     <div class="client-section">
         <div class="input-group">
             <label>Nombre del Cliente</label>
-            <input type="text" placeholder="Nombre completo">
+            <input type="text" id="cliente_nombre" placeholder="Nombre completo">
         </div>
         <div class="input-group">
             <label>Dirección de Entrega / Instalación</label>
-            <input type="text" placeholder="Calle, Número, Colonia">
+            <input type="text" id="cliente_direccion" placeholder="Calle, Número, Colonia">
         </div>
         <div class="input-group">
             <label>Fecha de Instalación</label>
-            <input type="date">
-        </div>
-        <div class="input-group">
-            <label>Tipo de Persiana</label>
-            <input type="text" placeholder="Ej. Roller Blackout">
-        </div>
-        <div class="input-group">
-            <label>Lado del Control (Mando)</label>
-            <select id="lado_control">
-                <option value="Derecho">DERECHO</option>
-                <option value="Izquierdo">IZQUIERDO</option>
-            </select>
+            <input type="date" id="cliente_fecha">
         </div>
         <div class="input-group">
             <label>Estatus de la Orden</label>
-            <select class="status-select">
+            <select class="status-select" id="cliente_estatus">
                 <option value="Pendiente">PENDIENTE</option>
                 <option value="En proceso de fabricación">EN PROCESO DE FABRICACIÓN</option>
                 <option value="Fabricado">FABRICADO</option>
@@ -184,9 +211,15 @@
                 <option value="En camino">EN CAMINO</option>
             </select>
         </div>
+        <div class="input-group">
+            <button class="btn btn-success btn-sm" onclick="guardarCliente()" style="margin-bottom:2px;">💾 Guardar Cliente</button>
+        </div>
     </div>
 
-    <div class="admin-bar">Configuración de Costos de Insumos (Base)</div>
+    <div class="admin-bar">
+        <span>Configuración de Costos de Insumos (Base)</span>
+        <button class="btn btn-save-config btn-sm no-print" onclick="guardarConfiguracion()">💾 Guardar Precios Base</button>
+    </div>
     <div class="config-inputs">
         <div class="config-group"><label>Mecanismo</label><input type="number" id="p_mecanismo" value="45.94" oninput="calcular()"></div>
         <div class="config-group"><label>Soporte Central</label><input type="number" id="p_soporte" value="12.74" oninput="calcular()"></div>
@@ -202,16 +235,68 @@
         <div class="config-group"><label>Merma %</label><input type="number" id="factor_desp" value="5" oninput="calcular()"></div>
     </div>
 
-    <div class="admin-bar">Especificaciones Técnicas y Venta</div>
+    <div class="admin-bar">Medidas de Persianas (Tipo, Control, Medidas, Precio Venta, Instalación y Total)</div>
+    <div class="medidas-section">
+        <table class="medidas-table" id="tabla-medidas">
+            <thead>
+                <tr>
+                    <th style="width:11%;">Descripción</th>
+                    <th style="width:11%;">Tipo</th>
+                    <th style="width:8%;">Control</th>
+                    <th style="width:7%;">Ancho (m)</th>
+                    <th style="width:7%;">Alto (m)</th>
+                    <th style="width:6%;">m²</th>
+                    <th style="width:10%;">Precio Venta ($/m²)</th>
+                    <th style="width:9%;">Instalación ($)</th>
+                    <th style="width:10%;">Subtotal Venta</th>
+                    <th style="width:11%;">Total (Venta + Inst.)</th>
+                    <th style="width:5%;" class="no-print">Acción</th>
+                </tr>
+            </thead>
+            <tbody id="medidas-body">
+                <tr>
+                    <td><input type="text" class="medida-desc" value="Persiana 1"></td>
+                    <td><input type="text" class="medida-tipo" value="Roller Blackout"></td>
+                    <td>
+                        <select class="medida-control">
+                            <option value="Derecho">DERECHO</option>
+                            <option value="Izquierdo">IZQUIERDO</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="medida-ancho" value="2.18" step="0.01" oninput="calcular()"></td>
+                    <td><input type="number" class="medida-alto" value="2.80" step="0.01" oninput="calcular()"></td>
+                    <td class="m2-cell m2-item">0.00</td>
+                    <td><input type="number" class="medida-precio" value="600" step="0.01" oninput="calcular()" style="font-weight:bold; color:#27ae60;"></td>
+                    <td><input type="number" class="medida-instalacion" value="0" step="0.01" oninput="calcular()" style="font-weight:bold; color:#8e44ad;"></td>
+                    <td class="m2-cell subtotal-venta-item" style="color:#27ae60;">$0.00</td>
+                    <td class="m2-cell total-item" style="color:#16a085;">$0.00</td>
+                    <td class="no-print"><button class="btn-del-medida" onclick="eliminarMedida(this)">✕</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr style="background:#eaf2f8; font-weight:bold;">
+                    <td colspan="5" style="text-align:right; padding-right:15px;">TOTALES:</td>
+                    <td class="m2-cell" id="total-m2" style="font-size:15px;">0.00</td>
+                    <td class="costo-cell" id="total-precio-promedio" style="font-size:12px; color:#27ae60;">$0.00</td>
+                    <td class="costo-cell" id="total-instalacion-persianas" style="font-size:12px; color:#8e44ad;">$0.00</td>
+                    <td class="costo-cell" id="total-subtotal-venta" style="font-size:13px; color:#27ae60;">$0.00</td>
+                    <td class="costo-cell" id="total-venta-instalacion" style="font-size:13px; color:#16a085;">$0.00</td>
+                    <td class="no-print"><button class="btn-add-medida" onclick="agregarMedida()">+ Agregar</button></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="admin-bar">Especificaciones Técnicas y Venta General</div>
     <div class="production-grid">
         <div class="prod-field"><label>Ancho (m)</label><input type="number" id="ancho" value="2.18" step="0.01" oninput="calcular()"></div>
         <div class="prod-field"><label>Alto (m)</label><input type="number" id="alto" value="2.80" step="0.01" oninput="calcular()"></div>
         <div class="prod-field m2-result-box"><label>Total m²</label><span class="m2-val" id="m2-display">0.00 m²</span></div>
-        <div class="prod-field sale-field"><label>Venta ($/m²)</label><input type="number" id="precio_m2_venta" value="600" oninput="calcular()"></div>
+        <div class="prod-field sale-field"><label>Venta General ($/m²) — Actualiza Todas</label><input type="number" id="precio_m2_venta" value="600" oninput="aplicarPrecioGeneral()"></div>
         <div class="prod-field"><label>Costo Tela ($ Compra)</label><input type="number" id="costoTela" value="935.50" oninput="calcular()"></div>
     </div>
 
-    <table>
+    <table class="desglose">
         <thead>
             <tr>
                 <th class="col-desc">Componente</th>
@@ -228,6 +313,7 @@
         <div class="card">
             <h3>COSTOS DE PRODUCCIÓN</h3>
             <div class="row-val"><span>Suma Insumos:</span> <span id="res-materiales">$0.00</span></div>
+            <div class="row-val"><span>Instalación Persianas (Individual):</span> <span class="color-inst" id="res-instalacion-persianas">$0.00</span></div>
             <div class="row-val"><span>I.V.A. (16%):</span> <span id="res-iva">$0.00</span></div>
             <div class="row-val" style="border-top: 2px solid #eee; padding-top: 15px; font-weight: bold;">
                 <span>COSTO TOTAL:</span> <span class="big-val color-prod" id="res-costo-total">$0.00</span>
@@ -238,27 +324,145 @@
             <h3 style="color: #3498db; border-color: #555; display: flex; justify-content: space-between;">
                 RENTABILIDAD <span class="util-pct-badge" id="res-util-pct">0%</span>
             </h3>
-            <div class="row-val"><span>Venta Final:</span> <span class="big-val color-sale" id="res-precio-venta">$0.00</span></div>
-            <div class="row-val" style="margin-top: 20px; border-top: 1px solid #555; padding-top: 15px;">
+            <div class="row-val"><span>Venta Persianas (m² × Precio):</span> <span class="big-val color-sale" id="res-venta-individual" style="font-size:20px;">$0.00</span></div>
+            <div class="row-val"><span>+ Instalaciones:</span> <span class="big-val color-inst" id="res-instalacion-venta" style="font-size:20px;">$0.00</span></div>
+            <div class="row-val" style="margin-top: 10px; border-top: 1px solid #555; padding-top: 15px;">
+                <span>VENTA TOTAL:</span> <span class="big-val color-total" id="res-venta-total" style="font-size:26px;">$0.00</span>
+            </div>
+            <div class="row-val" style="margin-top: 10px; border-top: 1px solid #555; padding-top: 15px;">
                 <span>GANANCIA NETA:</span> <span class="big-val color-util" id="res-utilidad">$0.00</span>
             </div>
         </div>
     </div>
 
-    <button class="btn-print" onclick="window.print()">Imprimir Cédula de Trabajo</button>
+    <div class="action-buttons no-print">
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Guardar en PDF / Imprimir</button>
+        <button class="btn btn-whatsapp" onclick="enviarWhatsApp()">📱 Enviar por WhatsApp</button>
+        <button class="btn btn-success" onclick="guardarCliente()">💾 Guardar Cliente</button>
+        <button class="btn btn-primary" onclick="cargarCliente()">📂 Cargar Cliente</button>
+        <button class="btn btn-danger" onclick="eliminarCliente()">🗑️ Eliminar Cliente</button>
+    </div>
 </div>
 
 <script>
+    // ============ UTILIDADES ============
+    function getV(id) {
+        const el = document.getElementById(id);
+        return el ? (parseFloat(el.value) || 0) : 0;
+    }
+
+    function formatMoney(n) {
+        return '$' + n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
+
+    // ============ APLICAR PRECIO GENERAL A TODAS LAS PERSIANAS ============
+    // Cuando se cambia "Venta General ($/m²)", se actualiza el precio de TODAS las persianas
+    // (excepto las que ya tengan un precio distinto aplicado manualmente, pero para simplificar
+    // actualizamos todas, ya que el usuario pidió que el total se mueva al cambiar ese campo).
+    function aplicarPrecioGeneral() {
+        const nuevoPrecio = getV('precio_m2_venta');
+        document.querySelectorAll('#medidas-body tr').forEach(tr => {
+            const inputPrecio = tr.querySelector('.medida-precio');
+            if (inputPrecio) inputPrecio.value = nuevoPrecio;
+        });
+        calcular();
+    }
+
+    // ============ MEDIDAS MÚLTIPLES ============
+    function agregarMedida() {
+        const tbody = document.getElementById('medidas-body');
+        const count = tbody.children.length + 1;
+        const precioDefecto = getV('precio_m2_venta') || 600;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><input type="text" class="medida-desc" value="Persiana ${count}"></td>
+            <td><input type="text" class="medida-tipo" value="Roller Blackout"></td>
+            <td>
+                <select class="medida-control">
+                    <option value="Derecho">DERECHO</option>
+                    <option value="Izquierdo">IZQUIERDO</option>
+                </select>
+            </td>
+            <td><input type="number" class="medida-ancho" value="1.00" step="0.01" oninput="calcular()"></td>
+            <td><input type="number" class="medida-alto" value="1.00" step="0.01" oninput="calcular()"></td>
+            <td class="m2-cell m2-item">0.00</td>
+            <td><input type="number" class="medida-precio" value="${precioDefecto}" step="0.01" oninput="calcular()" style="font-weight:bold; color:#27ae60;"></td>
+            <td><input type="number" class="medida-instalacion" value="0" step="0.01" oninput="calcular()" style="font-weight:bold; color:#8e44ad;"></td>
+            <td class="m2-cell subtotal-venta-item" style="color:#27ae60;">$0.00</td>
+            <td class="m2-cell total-item" style="color:#16a085;">$0.00</td>
+            <td class="no-print"><button class="btn-del-medida" onclick="eliminarMedida(this)">✕</button></td>
+        `;
+        tbody.appendChild(tr);
+        calcular();
+    }
+
+    function eliminarMedida(btn) {
+        const tbody = document.getElementById('medidas-body');
+        if (tbody.children.length <= 1) {
+            alert('Debe haber al menos una medida.');
+            return;
+        }
+        btn.closest('tr').remove();
+        calcular();
+    }
+
+    function obtenerMedidas() {
+        const filas = document.querySelectorAll('#medidas-body tr');
+        const medidas = [];
+        filas.forEach(tr => {
+            const desc = tr.querySelector('.medida-desc')?.value || '';
+            const tipo = tr.querySelector('.medida-tipo')?.value || '';
+            const control = tr.querySelector('.medida-control')?.value || '';
+            const ancho = parseFloat(tr.querySelector('.medida-ancho')?.value) || 0;
+            const alto = parseFloat(tr.querySelector('.medida-alto')?.value) || 0;
+            const precio = parseFloat(tr.querySelector('.medida-precio')?.value) || 0;
+            const instalacion = parseFloat(tr.querySelector('.medida-instalacion')?.value) || 0;
+            const m2 = ancho * alto;
+            const subtotalVenta = m2 * precio;
+            const total = subtotalVenta + instalacion;
+
+            const m2Cell = tr.querySelector('.m2-item');
+            if (m2Cell) m2Cell.textContent = m2.toFixed(2);
+            const subCell = tr.querySelector('.subtotal-venta-item');
+            if (subCell) subCell.textContent = formatMoney(subtotalVenta);
+            const totCell = tr.querySelector('.total-item');
+            if (totCell) totCell.textContent = formatMoney(total);
+
+            medidas.push({ desc, tipo, control, ancho, alto, m2, precio, instalacion, subtotalVenta, total });
+        });
+        return medidas;
+    }
+
+    // ============ CÁLCULO PRINCIPAL ============
     function calcular() {
-        const getV = (id) => parseFloat(document.getElementById(id).value) || 0;
-        
-        const fM = 1 + (getV('factor_desp') / 100);
+        const medidas = obtenerMedidas();
+        const totalM2 = medidas.reduce((sum, m) => sum + m.m2, 0);
+        const totalInstalacionPersianas = medidas.reduce((sum, m) => sum + m.instalacion, 0);
+        const totalSubtotalVenta = medidas.reduce((sum, m) => sum + m.subtotalVenta, 0);
+        const totalVentaInstalacion = medidas.reduce((sum, m) => sum + m.total, 0);
+        const anchoTotal = medidas.reduce((sum, m) => sum + m.ancho, 0);
+        const altoMax = medidas.length > 0 ? Math.max(...medidas.map(m => m.alto)) : 0;
+        const precioPromedio = medidas.length > 0 ? (medidas.reduce((s, m) => s + m.precio, 0) / medidas.length) : 0;
+
+        document.getElementById('m2-display').innerText = totalM2.toFixed(2) + " m²";
+        document.getElementById('total-m2').textContent = totalM2.toFixed(2);
+        document.getElementById('total-precio-promedio').textContent = formatMoney(precioPromedio);
+        document.getElementById('total-instalacion-persianas').textContent = formatMoney(totalInstalacionPersianas);
+        document.getElementById('total-subtotal-venta').textContent = formatMoney(totalSubtotalVenta);
+        document.getElementById('total-venta-instalacion').textContent = formatMoney(totalVentaInstalacion);
+
+        if (medidas.length === 1) {
+            document.getElementById('ancho').value = medidas[0].ancho.toFixed(2);
+            document.getElementById('alto').value = medidas[0].alto.toFixed(2);
+        } else {
+            document.getElementById('ancho').value = anchoTotal.toFixed(2);
+            document.getElementById('alto').value = altoMax.toFixed(2);
+        }
+
         const ancho = getV('ancho');
         const alto = getV('alto');
-        const m2 = ancho * alto;
+        const fM = 1 + (getV('factor_desp') / 100);
         const mtsCadena = alto * 2;
-        
-        document.getElementById('m2-display').innerText = m2.toFixed(2) + " m²";
 
         const items = [
             { n: "Tela de Persiana (Corte)", c: "1.00 Pza", d: getV('factor_desp')+"%", p: getV('costoTela'), t: getV('costoTela') * fM },
@@ -279,35 +483,302 @@
         const tbody = document.getElementById('tabla-cuerpo');
         tbody.innerHTML = "";
 
-        items.forEach(m => {
+        items.forEach((m, idx) => {
+            let cantidadNum = parseFloat(m.c) || 0;
+            const cantidadDisplay = (Math.round(cantidadNum * 100) / 100);
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="col-desc">${m.n}</td>
+                <td class="col-qty">
+                    <input type="number" class="input-cantidad" data-idx="${idx}" 
+                           value="${cantidadDisplay}" step="0.01" 
+                           onchange="actualizarCantidad(this)">
+                </td>
+                <td class="col-desp">${m.d}</td>
+                <td class="col-unit">${formatMoney(m.p)}</td>
+                <td class="col-tot" id="subtotal-${idx}">${formatMoney(m.t)}</td>
+            `;
+            tbody.appendChild(tr);
             subtotalCosto += m.t;
-            tbody.innerHTML += `
-                <tr>
-                    <td class="col-desc">${m.n}</td>
-                    <td class="col-qty">${m.c}</td>
-                    <td class="col-desp">${m.d}</td>
-                    <td class="col-unit">$${m.p.toLocaleString('en-US',{minimumFractionDigits:2})}</td>
-                    <td class="col-tot">$${m.t.toLocaleString('en-US',{minimumFractionDigits:2})}</td>
-                </tr>`;
         });
 
+        window._itemsBase = items;
+        window._subtotalCostoBase = subtotalCosto;
+
         const iva = subtotalCosto * 0.16;
-        const costoTotal = subtotalCosto + iva;
-        const precioM2Venta = getV('precio_m2_venta');
-        const ventaTotal = m2 * precioM2Venta;
+        const costoTotal = subtotalCosto + totalInstalacionPersianas + iva;
+
+        // ====== RENTABILIDAD ======
+        const ventaPersianas = totalSubtotalVenta;
+        const ventaInstalaciones = totalInstalacionPersianas;
+        const ventaTotal = ventaPersianas + ventaInstalaciones;
+
         const utilidadDinero = ventaTotal - costoTotal;
         const utilidadPorcentaje = costoTotal > 0 ? (utilidadDinero / costoTotal) * 100 : 0;
 
-        document.getElementById('res-materiales').innerText = `$${subtotalCosto.toLocaleString('en-US',{minimumFractionDigits:2})}`;
-        document.getElementById('res-iva').innerText = `$${iva.toLocaleString('en-US',{minimumFractionDigits:2})}`;
-        document.getElementById('res-costo-total').innerText = `$${costoTotal.toLocaleString('en-US',{minimumFractionDigits:2})}`;
-        document.getElementById('res-precio-venta').innerText = `$${ventaTotal.toLocaleString('en-US',{minimumFractionDigits:2})}`;
-        document.getElementById('res-utilidad').innerText = `$${utilidadDinero.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        document.getElementById('res-materiales').innerText = formatMoney(subtotalCosto);
+        document.getElementById('res-instalacion-persianas').innerText = formatMoney(totalInstalacionPersianas);
+        document.getElementById('res-iva').innerText = formatMoney(iva);
+        document.getElementById('res-costo-total').innerText = formatMoney(costoTotal);
+        document.getElementById('res-venta-individual').innerText = formatMoney(ventaPersianas);
+        document.getElementById('res-instalacion-venta').innerText = formatMoney(ventaInstalaciones);
+        document.getElementById('res-venta-total').innerText = formatMoney(ventaTotal);
+        document.getElementById('res-utilidad').innerText = formatMoney(utilidadDinero);
         document.getElementById('res-util-pct').innerText = `${utilidadPorcentaje.toFixed(1)}%`;
+
+        window._totales = {
+            subtotalCosto, totalInstalacionPersianas, iva, costoTotal,
+            ventaPersianas, ventaInstalaciones, ventaTotal,
+            utilidadDinero, utilidadPorcentaje, totalM2,
+            totalSubtotalVenta, totalVentaInstalacion
+        };
     }
 
+    function actualizarCantidad(input) {
+        const idx = parseInt(input.dataset.idx);
+        const nuevaCant = parseFloat(input.value) || 0;
+        const item = window._itemsBase[idx];
+        if (!item) return;
+
+        const cantOriginal = parseFloat(item.c) || 1;
+        const precioUnitario = item.t / cantOriginal;
+        const nuevoSubtotal = precioUnitario * nuevaCant;
+
+        document.getElementById(`subtotal-${idx}`).textContent = formatMoney(nuevoSubtotal);
+
+        let nuevoSubtotalCosto = 0;
+        document.querySelectorAll('#tabla-cuerpo tr').forEach((tr) => {
+            const sub = tr.querySelector('.col-tot').textContent.replace('$','').replace(/,/g,'');
+            nuevoSubtotalCosto += parseFloat(sub) || 0;
+        });
+
+        const medidas = obtenerMedidas();
+        const totalInstalacionPersianas = medidas.reduce((sum, m) => sum + m.instalacion, 0);
+        const totalSubtotalVenta = medidas.reduce((sum, m) => sum + m.subtotalVenta, 0);
+        const iva = nuevoSubtotalCosto * 0.16;
+        const costoTotal = nuevoSubtotalCosto + totalInstalacionPersianas + iva;
+
+        const ventaPersianas = totalSubtotalVenta;
+        const ventaInstalaciones = totalInstalacionPersianas;
+        const ventaTotal = ventaPersianas + ventaInstalaciones;
+
+        const utilidadDinero = ventaTotal - costoTotal;
+        const utilidadPorcentaje = costoTotal > 0 ? (utilidadDinero / costoTotal) * 100 : 0;
+
+        document.getElementById('res-materiales').innerText = formatMoney(nuevoSubtotalCosto);
+        document.getElementById('res-instalacion-persianas').innerText = formatMoney(totalInstalacionPersianas);
+        document.getElementById('res-iva').innerText = formatMoney(iva);
+        document.getElementById('res-costo-total').innerText = formatMoney(costoTotal);
+        document.getElementById('res-venta-individual').innerText = formatMoney(ventaPersianas);
+        document.getElementById('res-instalacion-venta').innerText = formatMoney(ventaInstalaciones);
+        document.getElementById('res-venta-total').innerText = formatMoney(ventaTotal);
+        document.getElementById('res-utilidad').innerText = formatMoney(utilidadDinero);
+        document.getElementById('res-util-pct').innerText = `${utilidadPorcentaje.toFixed(1)}%`;
+
+        window._totales = {
+            subtotalCosto: nuevoSubtotalCosto, totalInstalacionPersianas, iva, costoTotal,
+            ventaPersianas, ventaInstalaciones, ventaTotal,
+            utilidadDinero, utilidadPorcentaje,
+            totalM2: parseFloat(document.getElementById('m2-display').textContent) || 0,
+            totalSubtotalVenta, totalVentaInstalacion: totalSubtotalVenta + totalInstalacionPersianas
+        };
+    }
+
+    // ============ GUARDAR / CARGAR CLIENTE ============
+    function obtenerDatosCliente() {
+        const medidas = obtenerMedidas();
+        const config = {};
+        ['p_mecanismo','p_soporte','p_tubo','p_perfil','p_cadena','p_varilla','p_tapas','p_contrapeso','p_acc','p_mo','p_ins','factor_desp'].forEach(id => {
+            config[id] = getV(id);
+        });
+
+        const cantidadesEditadas = {};
+        document.querySelectorAll('.input-cantidad').forEach(inp => {
+            cantidadesEditadas[inp.dataset.idx] = parseFloat(inp.value) || 0;
+        });
+
+        return {
+            nombre: document.getElementById('cliente_nombre').value,
+            direccion: document.getElementById('cliente_direccion').value,
+            fecha: document.getElementById('cliente_fecha').value,
+            estatus: document.getElementById('cliente_estatus').value,
+            medidas: medidas,
+            config: config,
+            cantidadesEditadas: cantidadesEditadas,
+            precio_m2_venta: getV('precio_m2_venta'),
+            costoTela: getV('costoTela'),
+            ancho: getV('ancho'),
+            alto: getV('alto'),
+            totalM2: window._totales ? window._totales.totalM2 : 0,
+            totales: window._totales || {}
+        };
+    }
+
+    function guardarCliente() {
+        const nombre = document.getElementById('cliente_nombre').value.trim();
+        if (!nombre) {
+            alert('Ingresa el nombre del cliente para guardar.');
+            return;
+        }
+        const datos = obtenerDatosCliente();
+        localStorage.setItem('gaeto_cliente_' + nombre, JSON.stringify(datos));
+        alert('Cliente "' + nombre + '" guardado correctamente.');
+    }
+
+    function cargarCliente() {
+        const nombre = prompt('Nombre del cliente a cargar:');
+        if (!nombre) return;
+        const key = 'gaeto_cliente_' + nombre.trim();
+        const data = localStorage.getItem(key);
+        if (!data) {
+            alert('No se encontró el cliente: ' + nombre);
+            return;
+        }
+        const d = JSON.parse(data);
+
+        document.getElementById('cliente_nombre').value = d.nombre || '';
+        document.getElementById('cliente_direccion').value = d.direccion || '';
+        document.getElementById('cliente_fecha').value = d.fecha || '';
+        document.getElementById('cliente_estatus').value = d.estatus || 'Pendiente';
+
+        if (d.config) {
+            Object.keys(d.config).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = d.config[id];
+            });
+        }
+
+        const tbody = document.getElementById('medidas-body');
+        tbody.innerHTML = '';
+        if (d.medidas && d.medidas.length > 0) {
+            d.medidas.forEach((m, i) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><input type="text" class="medida-desc" value="${m.desc || 'Persiana ' + (i+1)}"></td>
+                    <td><input type="text" class="medida-tipo" value="${m.tipo || 'Roller Blackout'}"></td>
+                    <td>
+                        <select class="medida-control">
+                            <option value="Derecho" ${m.control === 'Derecho' ? 'selected' : ''}>DERECHO</option>
+                            <option value="Izquierdo" ${m.control === 'Izquierdo' ? 'selected' : ''}>IZQUIERDO</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="medida-ancho" value="${m.ancho}" step="0.01" oninput="calcular()"></td>
+                    <td><input type="number" class="medida-alto" value="${m.alto}" step="0.01" oninput="calcular()"></td>
+                    <td class="m2-cell m2-item">0.00</td>
+                    <td><input type="number" class="medida-precio" value="${m.precio || 600}" step="0.01" oninput="calcular()" style="font-weight:bold; color:#27ae60;"></td>
+                    <td><input type="number" class="medida-instalacion" value="${m.instalacion || 0}" step="0.01" oninput="calcular()" style="font-weight:bold; color:#8e44ad;"></td>
+                    <td class="m2-cell subtotal-venta-item" style="color:#27ae60;">$0.00</td>
+                    <td class="m2-cell total-item" style="color:#16a085;">$0.00</td>
+                    <td class="no-print"><button class="btn-del-medida" onclick="eliminarMedida(this)">✕</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } else {
+            agregarMedida();
+        }
+
+        document.getElementById('precio_m2_venta').value = d.precio_m2_venta || 600;
+        document.getElementById('costoTela').value = d.costoTela || 935.50;
+
+        calcular();
+
+        if (d.cantidadesEditadas) {
+            setTimeout(() => {
+                document.querySelectorAll('.input-cantidad').forEach(inp => {
+                    const idx = inp.dataset.idx;
+                    if (d.cantidadesEditadas[idx] !== undefined) {
+                        inp.value = d.cantidadesEditadas[idx];
+                        actualizarCantidad(inp);
+                    }
+                });
+            }, 50);
+        }
+
+        alert('Cliente "' + nombre + '" cargado.');
+    }
+
+    function eliminarCliente() {
+        const nombre = document.getElementById('cliente_nombre').value.trim();
+        if (!nombre) {
+            alert('Ingresa el nombre del cliente a eliminar.');
+            return;
+        }
+        if (confirm('¿Eliminar al cliente "' + nombre + '"? Esta acción no se puede deshacer.')) {
+            localStorage.removeItem('gaeto_cliente_' + nombre);
+            alert('Cliente eliminado.');
+        }
+    }
+
+    // ============ GUARDAR CONFIGURACIÓN BASE ============
+    function guardarConfiguracion() {
+        const config = {};
+        ['p_mecanismo','p_soporte','p_tubo','p_perfil','p_cadena','p_varilla','p_tapas','p_contrapeso','p_acc','p_mo','p_ins','factor_desp'].forEach(id => {
+            config[id] = getV(id);
+        });
+        localStorage.setItem('gaeto_config_base', JSON.stringify(config));
+        alert('Precios base guardados correctamente.');
+    }
+
+    function cargarConfiguracion() {
+        const data = localStorage.getItem('gaeto_config_base');
+        if (!data) return;
+        const config = JSON.parse(data);
+        Object.keys(config).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = config[id];
+        });
+    }
+
+    // ============ ENVIAR POR WHATSAPP ============
+    function enviarWhatsApp() {
+        const nombre = document.getElementById('cliente_nombre').value || 'Cliente';
+        const direccion = document.getElementById('cliente_direccion').value || '';
+        const fecha = document.getElementById('cliente_fecha').value || '';
+        const estatus = document.getElementById('cliente_estatus').value || '';
+
+        const medidas = obtenerMedidas();
+        let medidasTexto = '';
+        medidas.forEach((m, i) => {
+            medidasTexto += `  • ${m.desc || 'Persiana ' + (i+1)} | ${m.tipo} | Control: ${m.control} | ${m.ancho.toFixed(2)}m x ${m.alto.toFixed(2)}m = ${m.m2.toFixed(2)} m² | $${m.precio.toFixed(2)}/m² = ${formatMoney(m.subtotalVenta)} | Instalación: ${formatMoney(m.instalacion)} | Total: ${formatMoney(m.total)}\n`;
+        });
+
+        const totalM2 = medidas.reduce((s, m) => s + m.m2, 0).toFixed(2);
+        const t = window._totales || {};
+        const venta = t.ventaTotal ? formatMoney(t.ventaTotal) : '$0.00';
+        const costo = t.costoTotal ? formatMoney(t.costoTotal) : '$0.00';
+        const utilidad = t.utilidadDinero ? formatMoney(t.utilidadDinero) : '$0.00';
+        const pct = t.utilidadPorcentaje ? t.utilidadPorcentaje.toFixed(1) + '%' : '0%';
+
+        const mensaje = 
+`*GAETO PERSIANAS - Orden de Producción*
+
+*Cliente:* ${nombre}
+*Dirección:* ${direccion}
+*Fecha instalación:* ${fecha}
+*Estatus:* ${estatus}
+
+*Persianas:*
+${medidasTexto}
+*Total m²:* ${totalM2} m²
+
+*VENTA TOTAL:* ${venta}
+*COSTO TOTAL:* ${costo}
+*UTILIDAD:* ${utilidad} (${pct})
+
+_Generado automáticamente desde el sistema de control._`;
+
+        const url = 'https://wa.me/?text=' + encodeURIComponent(mensaje);
+        window.open(url, '_blank');
+    }
+
+    // ============ INICIALIZACIÓN ============
     document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-MX');
-    window.onload = calcular;
+
+    window.onload = function() {
+        cargarConfiguracion();
+        calcular();
+    };
 </script>
 
 </body>
